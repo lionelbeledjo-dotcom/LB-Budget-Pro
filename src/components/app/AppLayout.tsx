@@ -3,11 +3,12 @@ import {
   LayoutDashboard, Wallet, TrendingUp, Receipt, FileText, PiggyBank,
   CreditCard, BarChart3, CalendarDays, Sparkles, Settings, HelpCircle,
   ShieldCheck, RefreshCcw, Target, Menu, X, LogOut, Bell, User,
+  Users, Activity, Mail, Database, Globe, Megaphone, Layers,
 } from "lucide-react";
 import { useState } from "react";
 import { useAuthStore } from "@/lib/store/auth-store";
 
-const NAV_ITEMS = [
+const CLIENT_NAV = [
   { to: "/app", icon: LayoutDashboard, label: "Tableau de bord" },
   { to: "/app/budget", icon: Wallet, label: "Budget" },
   { to: "/app/revenus", icon: TrendingUp, label: "Revenus" },
@@ -23,7 +24,20 @@ const NAV_ITEMS = [
   { to: "/app/assistant", icon: Sparkles, label: "Assistant IA" },
   { to: "/app/parametres", icon: Settings, label: "Paramètres" },
   { to: "/app/support", icon: HelpCircle, label: "Support" },
-  { to: "/app/admin", icon: ShieldCheck, label: "Admin" },
+];
+
+const ADMIN_NAV = [
+  { to: "/app/admin", icon: LayoutDashboard, label: "Dashboard Admin" },
+  { to: "/app/admin/users", icon: Users, label: "Utilisateurs" },
+  { to: "/app/admin/subscriptions", icon: CreditCard, label: "Abonnements" },
+  { to: "/app/admin/revenue", icon: BarChart3, label: "Revenus & MRR" },
+  { to: "/app/admin/analytics", icon: Activity, label: "Analytiques" },
+  { to: "/app/admin/support", icon: Mail, label: "Support & Tickets" },
+  { to: "/app/admin/content", icon: Megaphone, label: "Contenu & Pages" },
+  { to: "/app/admin/plans", icon: Layers, label: "Plans & Tarifs" },
+  { to: "/app/admin/system", icon: Database, label: "Système" },
+  { to: "/app/admin/domains", icon: Globe, label: "Domaines" },
+  { to: "/app/parametres", icon: Settings, label: "Mon compte" },
 ];
 
 export function AppLayout() {
@@ -34,11 +48,13 @@ export function AppLayout() {
 
   const handleLogout = async () => {
     await signOut();
-    navigate({ to: "/auth" });
+    navigate({ to: isSuperAdmin ? "/admin-login" : "/auth" });
   };
 
   const userName = user?.user_metadata?.full_name || user?.email?.split("@")[0] || "Utilisateur";
   const initials = userName.split(" ").map((n: string) => n[0]).join("").slice(0, 2).toUpperCase();
+
+  const navItems = isSuperAdmin ? ADMIN_NAV : CLIENT_NAV;
 
   return (
     <div className="flex h-screen bg-background">
@@ -52,11 +68,11 @@ export function AppLayout() {
         {/* Logo */}
         <div className="flex h-16 items-center justify-between border-b border-border px-4">
           <Link to="/app" className="flex items-center gap-2.5">
-            <div className="grid h-9 w-9 place-items-center rounded-xl bg-navy-gradient shadow-elegant">
-              <Wallet className="h-5 w-5 text-white" strokeWidth={2.5} />
+            <div className={`grid h-9 w-9 place-items-center rounded-xl shadow-elegant ${isSuperAdmin ? "bg-navy-gradient" : "bg-navy-gradient"}`}>
+              {isSuperAdmin ? <ShieldCheck className="h-5 w-5 text-white" strokeWidth={2.5} /> : <Wallet className="h-5 w-5 text-white" strokeWidth={2.5} />}
             </div>
             <span className="font-display text-lg font-extrabold tracking-tight text-navy">
-              LB <span className="text-orange">Budget</span>
+              LB <span className="text-orange">{isSuperAdmin ? "Admin" : "Budget"}</span>
             </span>
           </Link>
           <button onClick={() => setSidebarOpen(false)} className="lg:hidden">
@@ -66,9 +82,12 @@ export function AppLayout() {
 
         {/* Nav */}
         <nav className="flex-1 overflow-y-auto px-3 py-4">
+          {isSuperAdmin && (
+            <p className="mb-2 px-3 text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Gestion plateforme</p>
+          )}
           <ul className="space-y-1">
-            {NAV_ITEMS.filter(item => item.to !== "/app/admin" || isSuperAdmin).map(item => {
-              const isActive = location.pathname === item.to || (item.to !== "/app" && location.pathname.startsWith(item.to));
+            {navItems.map(item => {
+              const isActive = location.pathname === item.to || (item.to !== "/app" && item.to !== "/app/admin" && location.pathname.startsWith(item.to));
               return (
                 <li key={item.to}>
                   <Link
@@ -92,7 +111,7 @@ export function AppLayout() {
         {/* User section */}
         <div className="border-t border-border p-4">
           <div className="flex items-center gap-3">
-            <div className="grid h-9 w-9 place-items-center rounded-full bg-navy text-xs font-bold text-white">
+            <div className={`grid h-9 w-9 place-items-center rounded-full text-xs font-bold text-white ${isSuperAdmin ? "bg-orange" : "bg-navy"}`}>
               {initials}
             </div>
             <div className="flex-1 min-w-0">
