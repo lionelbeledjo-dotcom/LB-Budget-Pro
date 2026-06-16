@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Plus, Receipt, Pencil, Trash2, Search, Upload } from "lucide-react";
 import { useFinanceStore, type Transaction } from "@/lib/store/finance-store";
 import { CATEGORIES_DEPENSES } from "@/lib/data/demo-data";
@@ -18,6 +18,32 @@ function DepensesPage() {
   const [search, setSearch] = useState("");
   const [filterCat, setFilterCat] = useState("Toutes");
   const [form, setForm] = useState({ montant: "", categorie: "Alimentation", description: "", date: new Date().toISOString().slice(0, 10), recurrence: "unique" as Transaction["recurrence"] });
+  const fileRef = useRef<HTMLInputElement>(null);
+
+  const handleImportCSV = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      const text = ev.target?.result as string;
+      const lines = text.split("\n").filter(Boolean);
+      lines.slice(1).forEach((line) => {
+        const cols = line.split(";").length > 1 ? line.split(";") : line.split(",");
+        if (cols.length >= 4) {
+          addTransaction({
+            type: "depense",
+            date: cols[0]?.trim() || new Date().toISOString().slice(0, 10),
+            categorie: cols[1]?.trim() || "Autre",
+            description: cols[2]?.trim() || "",
+            montant: Math.abs(Number(cols[3]?.trim().replace(",", ".") || 0)),
+            recurrence: "unique",
+          });
+        }
+      });
+    };
+    reader.readAsText(file);
+    e.target.value = "";
+  };
 
   const resetForm = () => { setForm({ montant: "", categorie: "Alimentation", description: "", date: new Date().toISOString().slice(0, 10), recurrence: "unique" }); setEditId(null); setShowForm(false); };
 
@@ -48,9 +74,10 @@ function DepensesPage() {
           <p className="text-sm text-muted-foreground">Total ce mois : <span className="font-semibold text-destructive">{total.toLocaleString("fr-FR")} €</span></p>
         </div>
         <div className="flex gap-2">
-          <button className="inline-flex items-center gap-2 rounded-xl border border-border px-4 py-2.5 text-sm font-medium hover:bg-secondary transition">
+          <button onClick={() => fileRef.current?.click()} className="inline-flex items-center gap-2 rounded-xl border border-border px-4 py-2.5 text-sm font-medium hover:bg-secondary transition">
             <Upload className="h-4 w-4" /> Import CSV
           </button>
+          <input ref={fileRef} type="file" accept=".csv" className="hidden" onChange={handleImportCSV} />
           <button onClick={() => setShowForm(true)} className="inline-flex items-center gap-2 rounded-xl bg-orange-gradient px-4 py-2.5 text-sm font-semibold text-white shadow-glow hover:brightness-110 transition">
             <Plus className="h-4 w-4" /> Ajouter
           </button>

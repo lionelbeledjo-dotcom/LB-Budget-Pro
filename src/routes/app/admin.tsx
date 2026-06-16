@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { ShieldCheck, Users, CreditCard, BarChart3, Mail, Activity, Settings } from "lucide-react";
+import { ShieldCheck, Users, CreditCard, BarChart3, Mail, Activity, Settings, Lock } from "lucide-react";
+import { useAuthStore } from "@/lib/store/auth-store";
 
 export const Route = createFileRoute("/app/admin")({
   component: AdminPage,
@@ -7,6 +8,20 @@ export const Route = createFileRoute("/app/admin")({
 });
 
 function AdminPage() {
+  const { isSuperAdmin, user } = useAuthStore();
+
+  if (!isSuperAdmin) {
+    return (
+      <div className="flex flex-col items-center justify-center py-20 text-center">
+        <div className="grid h-16 w-16 place-items-center rounded-2xl bg-destructive/10 text-destructive">
+          <Lock className="h-8 w-8" />
+        </div>
+        <h2 className="mt-4 font-display text-xl font-bold text-navy">Accès refusé</h2>
+        <p className="mt-2 text-sm text-muted-foreground">Cette page est réservée aux super administrateurs.</p>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-6">
       <div>
