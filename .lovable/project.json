@@ -1,4 +1,9 @@
 {
   "schemaVersion": 1,
-  "template": "tanstack_start_ts_2026-06-08-vite-8"
+  "template": "tanstack_start_ts_2026-06-08-vite-8",
+  "supabase": {
+    "projectId": "sjvwhqvetwwilftlkths",
+    "url": "https://sjvwhqvetwwilftlkths.supabase.co",
+    "anonKey": "sb_publishable_3Hfken0KYt3yTQxj7wzANg_al_59ATK"
+  }
 }
