@@ -1,8 +1,9 @@
-import { supabase } from "./supabase";
+import { supabase, supabaseConfigured } from "./supabase";
 import { useFinanceStore } from "./store/finance-store";
 import { useAuthStore } from "./store/auth-store";
 
 export async function syncToSupabase() {
+  if (!supabaseConfigured) return;
   const { user } = useAuthStore.getState();
   if (!user) return;
 
@@ -50,6 +51,7 @@ export async function syncToSupabase() {
 }
 
 export async function loadFromSupabase() {
+  if (!supabaseConfigured) return;
   const { user } = useAuthStore.getState();
   if (!user) return;
 

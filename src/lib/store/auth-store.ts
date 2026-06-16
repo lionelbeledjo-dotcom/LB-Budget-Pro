@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { supabase } from "../supabase";
+import { supabase, supabaseConfigured } from "../supabase";
 import type { User, Session } from "@supabase/supabase-js";
 
 interface AuthState {
@@ -22,6 +22,10 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   isSuperAdmin: false,
 
   initialize: async () => {
+    if (!supabaseConfigured) {
+      set({ loading: false });
+      return;
+    }
     const { data: { session } } = await supabase.auth.getSession();
     const user = session?.user ?? null;
     set({
@@ -42,6 +46,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   },
 
   signUp: async (email, password, fullName) => {
+    if (!supabaseConfigured) return { error: "Supabase non configuré. Ajoutez les variables VITE_SUPABASE_URL et VITE_SUPABASE_ANON_KEY." };
     const { error } = await supabase.auth.signUp({
       email,
       password,
@@ -52,13 +57,16 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   },
 
   signIn: async (email, password) => {
+    if (!supabaseConfigured) return { error: "Supabase non configuré. Ajoutez les variables VITE_SUPABASE_URL et VITE_SUPABASE_ANON_KEY." };
     const { error } = await supabase.auth.signInWithPassword({ email, password });
     if (error) return { error: error.message };
     return { error: null };
   },
 
   signOut: async () => {
-    await supabase.auth.signOut();
+    if (supabaseConfigured) {
+      await supabase.auth.signOut();
+    }
     set({ user: null, session: null, isSuperAdmin: false });
   },
 }));
