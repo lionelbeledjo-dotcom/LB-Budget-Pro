@@ -11,4 +11,11 @@ const supabaseAnonKey =
 
 export const supabaseConfigured = !!(supabaseUrl && supabaseAnonKey);
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
+  auth: {
+    detectSessionInUrl: true,
+    persistSession: true,
+    autoRefreshToken: true,
+    flowType: "implicit",
+  },
+});

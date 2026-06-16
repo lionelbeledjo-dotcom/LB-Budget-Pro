@@ -23,29 +23,21 @@ function AuthPage() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const hasOAuthReturn = window.location.hash.includes("access_token") || window.location.search.includes("code=");
-
-    const checkSession = async () => {
-      if (hasOAuthReturn) {
-        for (let i = 0; i < 20; i++) {
-          await new Promise(r => setTimeout(r, 300));
-          const { data: { session } } = await supabase.auth.getSession();
-          if (session?.user) {
-            window.location.hash = "";
-            navigate({ to: "/app" });
-            return;
-          }
-        }
-      } else {
-        const { data: { session } } = await supabase.auth.getSession();
-        if (session?.user) {
-          navigate({ to: "/app" });
-          return;
-        }
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      if (session?.user) {
+        navigate({ to: "/app" });
       }
-      setCheckingSession(false);
-    };
-    checkSession();
+    });
+
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session?.user) {
+        navigate({ to: "/app" });
+      } else {
+        setCheckingSession(false);
+      }
+    });
+
+    return () => { subscription.unsubscribe(); };
   }, []);
 
   const handleLogin = async (e: React.FormEvent) => {
