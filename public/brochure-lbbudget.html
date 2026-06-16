@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LB Budget Pro — Brochure</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --navy: #0A2E5C;
+      --orange: #FF6B00;
+      --success: #10B981;
+      --bg: #F8FAFC;
+      --card: #FFFFFF;
+      --muted: #64748B;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: #1E293B;
+      line-height: 1.6;
+    }
+    .page {
+      max-width: 900px;
+      margin: 0 auto;
+      background: white;
+      box-shadow: 0 4px 40px rgba(0,0,0,0.08);
+    }
+
+    /* HERO */
+    .hero {
+      background: linear-gradient(135deg, var(--navy) 0%, #1a4a8a 100%);
+      padding: 80px 60px;
+      text-align: center;
+      color: white;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -20%;
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, rgba(255,107,0,0.15) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+    .hero-logo {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 30px;
+    }
+    .hero-logo-icon {
+      width: 48px;
+      height: 48px;
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
+      font-size: 22px;
+    }
+    .hero-logo span {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 800;
+      font-size: 28px;
+      letter-spacing: -0.5px;
+    }
+    .hero-logo .accent { color: var(--orange); }
+    .hero h1 {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 42px;
+      font-weight: 800;
+      line-height: 1.2;
+      margin-bottom: 16px;
+    }
+    .hero p {
+      font-size: 18px;
+      opacity: 0.85;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    .hero-badge {
+      display: inline-block;
+      margin-top: 30px;
+      padding: 8px 24px;
+      background: var(--orange);
+      border-radius: 30px;
+      font-weight: 700;
+      font-size: 14px;
+      color: white;
+      letter-spacing: 0.5px;
+    }
+
+    /* SECTION */
+    .section {
+      padding: 60px;
+    }
+    .section-title {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 28px;
+      font-weight: 800;
+      color: var(--navy);
+      margin-bottom: 8px;
+    }
+    .section-sub {
+      font-size: 15px;
+      color: var(--muted);
+      margin-bottom: 40px;
+    }
+
+    /* FEATURES GRID */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+    .feature-card {
+      background: var(--bg);
+      border-radius: 16px;
+      padding: 28px 24px;
+      border: 1px solid #E2E8F0;
+    }
+    .feature-icon {
+      width: 42px;
+      height: 42px;
+      background: linear-gradient(135deg, var(--navy), #1a4a8a);
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      color: white;
+      font-size: 18px;
+      margin-bottom: 16px;
+    }
+    .feature-card h3 {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--navy);
+      margin-bottom: 8px;
+    }
+    .feature-card p {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    /* WHY US */
+    .why-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+    }
+    .why-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      padding: 24px;
+      background: var(--bg);
+      border-radius: 16px;
+      border: 1px solid #E2E8F0;
+    }
+    .why-num {
+      width: 36px;
+      height: 36px;
+      min-width: 36px;
+      background: var(--orange);
+      border-radius: 10px;
+      display: grid;
+      place-items: center;
+      color: white;
+      font-weight: 800;
+      font-size: 14px;
+    }
+    .why-item h4 {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--navy);
+      margin-bottom: 4px;
+    }
+    .why-item p {
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    /* PLANS */
+    .plans-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+    .plan-card {
+      border-radius: 20px;
+      padding: 32px 24px;
+      border: 2px solid #E2E8F0;
+      text-align: center;
+    }
+    .plan-card.featured {
+      border-color: var(--orange);
+      background: linear-gradient(180deg, #FFF7ED 0%, white 30%);
+      transform: scale(1.03);
+      box-shadow: 0 8px 30px rgba(255,107,0,0.12);
+    }
+    .plan-name {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--navy);
+    }
+    .plan-price {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 36px;
+      font-weight: 800;
+      color: var(--navy);
+      margin: 12px 0 4px;
+    }
+    .plan-price span { font-size: 16px; font-weight: 500; color: var(--muted); }
+    .plan-features {
+      list-style: none;
+      text-align: left;
+      margin: 24px 0;
+    }
+    .plan-features li {
+      font-size: 13px;
+      padding: 8px 0;
+      border-bottom: 1px solid #F1F5F9;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .plan-features li::before {
+      content: '✓';
+      color: var(--success);
+      font-weight: 700;
+    }
+    .plan-btn {
+      display: block;
+      width: 100%;
+      padding: 14px;
+      border-radius: 12px;
+      border: none;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      margin-top: 16px;
+    }
+    .plan-btn-default {
+      background: var(--bg);
+      color: var(--navy);
+      border: 1px solid #E2E8F0;
+    }
+    .plan-btn-orange {
+      background: linear-gradient(135deg, var(--orange), #FF8C33);
+      color: white;
+      box-shadow: 0 4px 15px rgba(255,107,0,0.3);
+    }
+
+    /* STATS */
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+      padding: 50px 60px;
+      background: linear-gradient(135deg, var(--navy) 0%, #1a4a8a 100%);
+      color: white;
+      text-align: center;
+    }
+    .stat-value {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 32px;
+      font-weight: 800;
+      color: var(--orange);
+    }
+    .stat-label {
+      font-size: 13px;
+      opacity: 0.8;
+      margin-top: 4px;
+    }
+
+    /* CTA */
+    .cta {
+      padding: 60px;
+      text-align: center;
+      background: var(--bg);
+    }
+    .cta h2 {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 30px;
+      font-weight: 800;
+      color: var(--navy);
+      margin-bottom: 12px;
+    }
+    .cta p {
+      font-size: 16px;
+      color: var(--muted);
+      margin-bottom: 30px;
+    }
+    .cta-btn {
+      display: inline-block;
+      padding: 16px 40px;
+      background: linear-gradient(135deg, var(--orange), #FF8C33);
+      color: white;
+      font-weight: 700;
+      font-size: 16px;
+      border-radius: 14px;
+      text-decoration: none;
+      box-shadow: 0 6px 20px rgba(255,107,0,0.3);
+    }
+    .cta-url {
+      margin-top: 16px;
+      font-size: 14px;
+      color: var(--muted);
+    }
+    .cta-url a {
+      color: var(--orange);
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    /* FOOTER */
+    .footer {
+      padding: 30px 60px;
+      border-top: 1px solid #E2E8F0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    @media print {
+      body { background: white; }
+      .page { box-shadow: none; }
+    }
+    @media (max-width: 768px) {
+      .features-grid, .plans-grid { grid-template-columns: 1fr; }
+      .why-grid { grid-template-columns: 1fr; }
+      .stats-row { grid-template-columns: repeat(2, 1fr); }
+      .hero, .section { padding: 40px 30px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+
+    <!-- HERO -->
+    <div class="hero">
+      <div class="hero-logo">
+        <div class="hero-logo-icon">💰</div>
+        <span>LB <span class="accent">Budget</span></span>
+      </div>
+      <h1>Prenez le contrôle total<br>de vos finances personnelles</h1>
+      <p>La plateforme intelligente qui centralise, analyse et optimise votre gestion financière grâce à l'intelligence artificielle.</p>
+      <div class="hero-badge">APPLICATION WEB PREMIUM</div>
+    </div>
+
+    <!-- STATS -->
+    <div class="stats-row">
+      <div>
+        <div class="stat-value">15+</div>
+        <div class="stat-label">Modules financiers</div>
+      </div>
+      <div>
+        <div class="stat-value">IA</div>
+        <div class="stat-label">Assistant intelligent</div>
+      </div>
+      <div>
+        <div class="stat-value">99.9%</div>
+        <div class="stat-label">Disponibilité</div>
+      </div>
+      <div>
+        <div class="stat-value">256-bit</div>
+        <div class="stat-label">Chiffrement SSL</div>
+      </div>
+    </div>
+
+    <!-- QU'EST-CE QUE C'EST -->
+    <div class="section">
+      <h2 class="section-title">Qu'est-ce que LB Budget ?</h2>
+      <p class="section-sub">LB Budget est une application web de gestion financière personnelle tout-en-un, conçue pour les particuliers et les entrepreneurs qui veulent une vision claire et complète de leur argent.</p>
+
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">📊</div>
+          <h3>Tableau de bord</h3>
+          <p>Vue synthétique de votre situation financière avec graphiques temps réel et indicateurs clés.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">💳</div>
+          <h3>Suivi des dépenses</h3>
+          <p>Catégorisation automatique, import CSV, visualisation par période et par catégorie.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">📋</div>
+          <h3>Factures</h3>
+          <p>Créez, envoyez et suivez vos factures. Alertes d'échéance et historique complet.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🏦</div>
+          <h3>Épargne & Objectifs</h3>
+          <p>Définissez des objectifs d'épargne, suivez votre progression et optimisez vos placements.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">📈</div>
+          <h3>Investissements</h3>
+          <p>Suivi de portefeuille, performances par actif, allocation et diversification.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🤖</div>
+          <h3>Assistant IA</h3>
+          <p>Conseils personnalisés, détection d'anomalies et recommandations d'optimisation budgétaire.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🔄</div>
+          <h3>Abonnements</h3>
+          <p>Centralisez tous vos abonnements, détectez les doublons et optimisez vos charges récurrentes.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">💰</div>
+          <h3>Budget mensuel</h3>
+          <p>Créez des enveloppes budgétaires, fixez des limites et recevez des alertes en temps réel.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">📅</div>
+          <h3>Calendrier financier</h3>
+          <p>Visualisez vos échéances, paiements et entrées d'argent sur un calendrier interactif.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- POURQUOI NOUS -->
+    <div class="section" style="background: #F8FAFC;">
+      <h2 class="section-title">Pourquoi choisir LB Budget ?</h2>
+      <p class="section-sub">Une solution pensée pour la performance, la simplicité et la sécurité.</p>
+
+      <div class="why-grid">
+        <div class="why-item">
+          <div class="why-num">1</div>
+          <div>
+            <h4>Interface ultra-rapide</h4>
+            <p>Chargement instantané grâce au rendu hybride SSR/SPA. Pas d'attente, pas de lag, même avec des milliers de transactions.</p>
+          </div>
+        </div>
+        <div class="why-item">
+          <div class="why-num">2</div>
+          <div>
+            <h4>Sécurité bancaire</h4>
+            <p>Chiffrement SSL 256-bit, authentification 2FA, isolation des données par utilisateur (Row Level Security).</p>
+          </div>
+        </div>
+        <div class="why-item">
+          <div class="why-num">3</div>
+          <div>
+            <h4>Intelligence artificielle</h4>
+            <p>Notre assistant IA analyse vos habitudes et vous donne des conseils personnalisés pour économiser plus.</p>
+          </div>
+        </div>
+        <div class="why-item">
+          <div class="why-num">4</div>
+          <div>
+            <h4>Tout-en-un</h4>
+            <p>Plus besoin de 5 apps différentes. Budget, dépenses, factures, épargne, investissements : tout est centralisé.</p>
+          </div>
+        </div>
+        <div class="why-item">
+          <div class="why-num">5</div>
+          <div>
+            <h4>Accessible partout</h4>
+            <p>Application web responsive : utilisez-la sur ordinateur, tablette ou mobile, sans rien installer.</p>
+          </div>
+        </div>
+        <div class="why-item">
+          <div class="why-num">6</div>
+          <div>
+            <h4>Connexion Google</h4>
+            <p>Inscrivez-vous en un clic avec votre compte Google. Pas de mot de passe à retenir.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PLANS -->
+    <div class="section">
+      <h2 class="section-title">Nos offres</h2>
+      <p class="section-sub">Choisissez le plan adapté à vos besoins. Évoluez à tout moment.</p>
+
+      <div class="plans-grid">
+        <div class="plan-card">
+          <div class="plan-name">Gratuit</div>
+          <div class="plan-price">0€<span>/mois</span></div>
+          <ul class="plan-features">
+            <li>1 compte bancaire</li>
+            <li>Suivi dépenses basique</li>
+            <li>Budget mensuel</li>
+            <li>Tableau de bord</li>
+          </ul>
+          <button class="plan-btn plan-btn-default">Commencer gratuitement</button>
+        </div>
+
+        <div class="plan-card featured">
+          <div class="plan-name">Pro ⭐</div>
+          <div class="plan-price">9€<span>/mois</span></div>
+          <ul class="plan-features">
+            <li>5 comptes bancaires</li>
+            <li>Tous les modules</li>
+            <li>Export CSV & PDF</li>
+            <li>Assistant IA (50 req/mois)</li>
+            <li>Factures illimitées</li>
+            <li>Import automatique</li>
+          </ul>
+          <button class="plan-btn plan-btn-orange">Choisir le Plan Pro</button>
+        </div>
+
+        <div class="plan-card">
+          <div class="plan-name">Premium</div>
+          <div class="plan-price">19€<span>/mois</span></div>
+          <ul class="plan-features">
+            <li>Comptes illimités</li>
+            <li>Assistant IA illimité</li>
+            <li>Export API</li>
+            <li>Support prioritaire 24/7</li>
+            <li>Rapports avancés</li>
+            <li>Multi-devises</li>
+          </ul>
+          <button class="plan-btn plan-btn-default">Choisir Premium</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- CTA -->
+    <div class="cta">
+      <h2>Prêt à transformer votre gestion financière ?</h2>
+      <p>Rejoignez des milliers d'utilisateurs qui ont repris le contrôle de leur argent.</p>
+      <a href="https://lbbudgetpro.lovable.app/auth" class="cta-btn">Créer mon compte gratuitement →</a>
+      <div class="cta-url">
+        <a href="https://lbbudgetpro.lovable.app">lbbudgetpro.lovable.app</a>
+      </div>
+    </div>
+
+    <!-- FOOTER -->
+    <div class="footer">
+      <div>© 2026 LB Budget — Tous droits réservés</div>
+      <div>Contact : lbcloudadmin@gmail.com | +33 6 60 06 17 23</div>
+    </div>
+
+  </div>
+</body>
+</html>
