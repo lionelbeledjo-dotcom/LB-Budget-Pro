@@ -34,12 +34,13 @@ export const useAuthStore = create<AuthState>((set) => ({
       isSuperAdmin: user?.email === SUPER_ADMIN_EMAIL,
     });
 
-    supabase.auth.onAuthStateChange((_event, session) => {
-      const user = session?.user ?? null;
+    supabase.auth.onAuthStateChange((_event, newSession) => {
+      const newUser = newSession?.user ?? null;
       set({
-        session,
-        user,
-        isSuperAdmin: user?.email === SUPER_ADMIN_EMAIL,
+        session: newSession,
+        user: newUser,
+        loading: false,
+        isSuperAdmin: newUser?.email === SUPER_ADMIN_EMAIL,
       });
     });
   },

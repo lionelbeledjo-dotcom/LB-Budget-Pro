@@ -16,7 +16,28 @@ function AppRoute() {
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
-    initialize().then(() => setReady(true));
+    const init = async () => {
+      if (supabaseConfigured) {
+        const { data: { session } } = await supabase.auth.getSession();
+        if (!session) {
+          const hash = window.location.hash;
+          if (hash && hash.includes("access_token")) {
+            await new Promise<void>((resolve) => {
+              const { data: { subscription } } = supabase.auth.onAuthStateChange((event) => {
+                if (event === "SIGNED_IN") {
+                  subscription.unsubscribe();
+                  resolve();
+                }
+              });
+              setTimeout(() => { subscription.unsubscribe(); resolve(); }, 5000);
+            });
+          }
+        }
+      }
+      await initialize();
+      setReady(true);
+    };
+    init();
   }, []);
 
   useEffect(() => {
