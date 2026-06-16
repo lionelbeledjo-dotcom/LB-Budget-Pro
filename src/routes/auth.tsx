@@ -23,40 +23,13 @@ function AuthPage() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const handleOAuth = async () => {
-      const hash = window.location.hash;
-      if (hash && hash.includes("access_token")) {
-        const params = new URLSearchParams(hash.substring(1));
-        const accessToken = params.get("access_token");
-        const refreshToken = params.get("refresh_token");
-        if (accessToken && refreshToken) {
-          const { data, error } = await supabase.auth.setSession({
-            access_token: accessToken,
-            refresh_token: refreshToken,
-          });
-          if (data.session) {
-            window.history.replaceState(null, "", window.location.pathname);
-            navigate({ to: "/app" });
-            return;
-          }
-        }
-      }
-
-      const { data: { session } } = await supabase.auth.getSession();
+    supabase.auth.getSession().then(({ data: { session } }) => {
       if (session?.user) {
         navigate({ to: "/app" });
-        return;
+      } else {
+        setCheckingSession(false);
       }
-
-      const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-        if (event === "SIGNED_IN" && session?.user) {
-          subscription.unsubscribe();
-          navigate({ to: "/app" });
-        }
-      });
-      setTimeout(() => { subscription.unsubscribe(); setCheckingSession(false); }, 4000);
-    };
-    handleOAuth();
+    });
   }, []);
 
   const handleLogin = async (e: React.FormEvent) => {
@@ -111,7 +84,7 @@ function AuthPage() {
     setError("");
     const { error } = await supabase.auth.signInWithOAuth({
       provider: "google",
-      options: { redirectTo: `${window.location.origin}/auth` },
+      options: { redirectTo: `${window.location.origin}/auth/callback` },
     });
     if (error) setError(error.message);
   };
