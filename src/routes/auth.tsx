@@ -23,22 +23,27 @@ function AuthPage() {
   const navigate = useNavigate();
 
   useEffect(() => {
+    const hasOAuthReturn = window.location.hash.includes("access_token") || window.location.search.includes("code=");
+
     const checkSession = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (session?.user) {
-        navigate({ to: "/app" });
-        return;
-      }
-      const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-        if (event === "SIGNED_IN" && session?.user) {
-          subscription.unsubscribe();
-          navigate({ to: "/app" });
+      if (hasOAuthReturn) {
+        for (let i = 0; i < 20; i++) {
+          await new Promise(r => setTimeout(r, 300));
+          const { data: { session } } = await supabase.auth.getSession();
+          if (session?.user) {
+            window.location.hash = "";
+            navigate({ to: "/app" });
+            return;
+          }
         }
-      });
-      setTimeout(() => {
-        subscription.unsubscribe();
-        setCheckingSession(false);
-      }, 3000);
+      } else {
+        const { data: { session } } = await supabase.auth.getSession();
+        if (session?.user) {
+          navigate({ to: "/app" });
+          return;
+        }
+      }
+      setCheckingSession(false);
     };
     checkSession();
   }, []);
