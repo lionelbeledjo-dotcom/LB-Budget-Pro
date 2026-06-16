@@ -1,0 +1,124 @@
+import { Link, Outlet, useLocation } from "@tanstack/react-router";
+import {
+  LayoutDashboard, Wallet, TrendingUp, Receipt, FileText, PiggyBank,
+  CreditCard, BarChart3, CalendarDays, Sparkles, Settings, HelpCircle,
+  ShieldCheck, RefreshCcw, Target, Menu, X, LogOut, Bell, User,
+} from "lucide-react";
+import { useState } from "react";
+
+const NAV_ITEMS = [
+  { to: "/app", icon: LayoutDashboard, label: "Tableau de bord" },
+  { to: "/app/budget", icon: Wallet, label: "Budget" },
+  { to: "/app/revenus", icon: TrendingUp, label: "Revenus" },
+  { to: "/app/depenses", icon: Receipt, label: "Dépenses" },
+  { to: "/app/factures", icon: FileText, label: "Factures" },
+  { to: "/app/epargne", icon: PiggyBank, label: "Épargne" },
+  { to: "/app/dettes", icon: CreditCard, label: "Dettes" },
+  { to: "/app/investissements", icon: BarChart3, label: "Investissements" },
+  { to: "/app/abonnements", icon: RefreshCcw, label: "Abonnements" },
+  { to: "/app/objectifs", icon: Target, label: "Objectifs" },
+  { to: "/app/rapports", icon: FileText, label: "Rapports" },
+  { to: "/app/calendrier", icon: CalendarDays, label: "Calendrier" },
+  { to: "/app/assistant", icon: Sparkles, label: "Assistant IA" },
+  { to: "/app/parametres", icon: Settings, label: "Paramètres" },
+  { to: "/app/support", icon: HelpCircle, label: "Support" },
+  { to: "/app/admin", icon: ShieldCheck, label: "Admin" },
+];
+
+export function AppLayout() {
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const location = useLocation();
+
+  return (
+    <div className="flex h-screen bg-background">
+      {/* Mobile overlay */}
+      {sidebarOpen && (
+        <div className="fixed inset-0 z-40 bg-black/50 lg:hidden" onClick={() => setSidebarOpen(false)} />
+      )}
+
+      {/* Sidebar */}
+      <aside className={`fixed inset-y-0 left-0 z-50 flex w-64 flex-col border-r border-border bg-card transition-transform lg:static lg:translate-x-0 ${sidebarOpen ? "translate-x-0" : "-translate-x-full"}`}>
+        {/* Logo */}
+        <div className="flex h-16 items-center justify-between border-b border-border px-4">
+          <Link to="/app" className="flex items-center gap-2.5">
+            <div className="grid h-9 w-9 place-items-center rounded-xl bg-navy-gradient shadow-elegant">
+              <Wallet className="h-5 w-5 text-white" strokeWidth={2.5} />
+            </div>
+            <span className="font-display text-lg font-extrabold tracking-tight text-navy">
+              LB <span className="text-orange">Budget</span>
+            </span>
+          </Link>
+          <button onClick={() => setSidebarOpen(false)} className="lg:hidden">
+            <X className="h-5 w-5" />
+          </button>
+        </div>
+
+        {/* Nav */}
+        <nav className="flex-1 overflow-y-auto px-3 py-4">
+          <ul className="space-y-1">
+            {NAV_ITEMS.map(item => {
+              const isActive = location.pathname === item.to || (item.to !== "/app" && location.pathname.startsWith(item.to));
+              return (
+                <li key={item.to}>
+                  <Link
+                    to={item.to}
+                    onClick={() => setSidebarOpen(false)}
+                    className={`flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition ${
+                      isActive
+                        ? "bg-orange/10 text-orange font-semibold"
+                        : "text-muted-foreground hover:bg-secondary hover:text-foreground"
+                    }`}
+                  >
+                    <item.icon className={`h-4.5 w-4.5 ${isActive ? "text-orange" : ""}`} />
+                    {item.label}
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
+        </nav>
+
+        {/* User section */}
+        <div className="border-t border-border p-4">
+          <div className="flex items-center gap-3">
+            <div className="grid h-9 w-9 place-items-center rounded-full bg-navy text-xs font-bold text-white">
+              LB
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="truncate text-sm font-semibold text-foreground">Lionel B.</p>
+              <p className="truncate text-xs text-muted-foreground">Plan Pro</p>
+            </div>
+            <button className="text-muted-foreground hover:text-foreground">
+              <LogOut className="h-4 w-4" />
+            </button>
+          </div>
+        </div>
+      </aside>
+
+      {/* Main content */}
+      <div className="flex flex-1 flex-col overflow-hidden">
+        {/* Top bar */}
+        <header className="flex h-16 items-center justify-between border-b border-border bg-card px-4 lg:px-6">
+          <button onClick={() => setSidebarOpen(true)} className="lg:hidden">
+            <Menu className="h-5 w-5" />
+          </button>
+          <div className="hidden lg:block" />
+          <div className="flex items-center gap-3">
+            <button className="relative rounded-xl p-2 text-muted-foreground hover:bg-secondary hover:text-foreground transition">
+              <Bell className="h-5 w-5" />
+              <span className="absolute right-1.5 top-1.5 h-2 w-2 rounded-full bg-orange" />
+            </button>
+            <button className="rounded-xl p-2 text-muted-foreground hover:bg-secondary hover:text-foreground transition">
+              <User className="h-5 w-5" />
+            </button>
+          </div>
+        </header>
+
+        {/* Page content */}
+        <main className="flex-1 overflow-y-auto p-4 lg:p-6">
+          <Outlet />
+        </main>
+      </div>
+    </div>
+  );
+}

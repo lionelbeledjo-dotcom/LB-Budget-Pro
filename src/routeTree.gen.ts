@@ -9,38 +9,252 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as AppRouteImport } from './routes/app'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AppIndexRouteImport } from './routes/app/index'
+import { Route as AppSupportRouteImport } from './routes/app/support'
+import { Route as AppRevenusRouteImport } from './routes/app/revenus'
+import { Route as AppRapportsRouteImport } from './routes/app/rapports'
+import { Route as AppParametresRouteImport } from './routes/app/parametres'
+import { Route as AppObjectifsRouteImport } from './routes/app/objectifs'
+import { Route as AppInvestissementsRouteImport } from './routes/app/investissements'
+import { Route as AppFacturesRouteImport } from './routes/app/factures'
+import { Route as AppEpargneRouteImport } from './routes/app/epargne'
+import { Route as AppDettesRouteImport } from './routes/app/dettes'
+import { Route as AppDepensesRouteImport } from './routes/app/depenses'
+import { Route as AppCalendrierRouteImport } from './routes/app/calendrier'
+import { Route as AppBudgetRouteImport } from './routes/app/budget'
+import { Route as AppAssistantRouteImport } from './routes/app/assistant'
+import { Route as AppAdminRouteImport } from './routes/app/admin'
+import { Route as AppAbonnementsRouteImport } from './routes/app/abonnements'
 
+const AppRoute = AppRouteImport.update({
+  id: '/app',
+  path: '/app',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AppIndexRoute = AppIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppSupportRoute = AppSupportRouteImport.update({
+  id: '/support',
+  path: '/support',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppRevenusRoute = AppRevenusRouteImport.update({
+  id: '/revenus',
+  path: '/revenus',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppRapportsRoute = AppRapportsRouteImport.update({
+  id: '/rapports',
+  path: '/rapports',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppParametresRoute = AppParametresRouteImport.update({
+  id: '/parametres',
+  path: '/parametres',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppObjectifsRoute = AppObjectifsRouteImport.update({
+  id: '/objectifs',
+  path: '/objectifs',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppInvestissementsRoute = AppInvestissementsRouteImport.update({
+  id: '/investissements',
+  path: '/investissements',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppFacturesRoute = AppFacturesRouteImport.update({
+  id: '/factures',
+  path: '/factures',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppEpargneRoute = AppEpargneRouteImport.update({
+  id: '/epargne',
+  path: '/epargne',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppDettesRoute = AppDettesRouteImport.update({
+  id: '/dettes',
+  path: '/dettes',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppDepensesRoute = AppDepensesRouteImport.update({
+  id: '/depenses',
+  path: '/depenses',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppCalendrierRoute = AppCalendrierRouteImport.update({
+  id: '/calendrier',
+  path: '/calendrier',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppBudgetRoute = AppBudgetRouteImport.update({
+  id: '/budget',
+  path: '/budget',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppAssistantRoute = AppAssistantRouteImport.update({
+  id: '/assistant',
+  path: '/assistant',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppAdminRoute = AppAdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppAbonnementsRoute = AppAbonnementsRouteImport.update({
+  id: '/abonnements',
+  path: '/abonnements',
+  getParentRoute: () => AppRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/app': typeof AppRouteWithChildren
+  '/app/abonnements': typeof AppAbonnementsRoute
+  '/app/admin': typeof AppAdminRoute
+  '/app/assistant': typeof AppAssistantRoute
+  '/app/budget': typeof AppBudgetRoute
+  '/app/calendrier': typeof AppCalendrierRoute
+  '/app/depenses': typeof AppDepensesRoute
+  '/app/dettes': typeof AppDettesRoute
+  '/app/epargne': typeof AppEpargneRoute
+  '/app/factures': typeof AppFacturesRoute
+  '/app/investissements': typeof AppInvestissementsRoute
+  '/app/objectifs': typeof AppObjectifsRoute
+  '/app/parametres': typeof AppParametresRoute
+  '/app/rapports': typeof AppRapportsRoute
+  '/app/revenus': typeof AppRevenusRoute
+  '/app/support': typeof AppSupportRoute
+  '/app/': typeof AppIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/app/abonnements': typeof AppAbonnementsRoute
+  '/app/admin': typeof AppAdminRoute
+  '/app/assistant': typeof AppAssistantRoute
+  '/app/budget': typeof AppBudgetRoute
+  '/app/calendrier': typeof AppCalendrierRoute
+  '/app/depenses': typeof AppDepensesRoute
+  '/app/dettes': typeof AppDettesRoute
+  '/app/epargne': typeof AppEpargneRoute
+  '/app/factures': typeof AppFacturesRoute
+  '/app/investissements': typeof AppInvestissementsRoute
+  '/app/objectifs': typeof AppObjectifsRoute
+  '/app/parametres': typeof AppParametresRoute
+  '/app/rapports': typeof AppRapportsRoute
+  '/app/revenus': typeof AppRevenusRoute
+  '/app/support': typeof AppSupportRoute
+  '/app': typeof AppIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/app': typeof AppRouteWithChildren
+  '/app/abonnements': typeof AppAbonnementsRoute
+  '/app/admin': typeof AppAdminRoute
+  '/app/assistant': typeof AppAssistantRoute
+  '/app/budget': typeof AppBudgetRoute
+  '/app/calendrier': typeof AppCalendrierRoute
+  '/app/depenses': typeof AppDepensesRoute
+  '/app/dettes': typeof AppDettesRoute
+  '/app/epargne': typeof AppEpargneRoute
+  '/app/factures': typeof AppFacturesRoute
+  '/app/investissements': typeof AppInvestissementsRoute
+  '/app/objectifs': typeof AppObjectifsRoute
+  '/app/parametres': typeof AppParametresRoute
+  '/app/rapports': typeof AppRapportsRoute
+  '/app/revenus': typeof AppRevenusRoute
+  '/app/support': typeof AppSupportRoute
+  '/app/': typeof AppIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/app'
+    | '/app/abonnements'
+    | '/app/admin'
+    | '/app/assistant'
+    | '/app/budget'
+    | '/app/calendrier'
+    | '/app/depenses'
+    | '/app/dettes'
+    | '/app/epargne'
+    | '/app/factures'
+    | '/app/investissements'
+    | '/app/objectifs'
+    | '/app/parametres'
+    | '/app/rapports'
+    | '/app/revenus'
+    | '/app/support'
+    | '/app/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/app/abonnements'
+    | '/app/admin'
+    | '/app/assistant'
+    | '/app/budget'
+    | '/app/calendrier'
+    | '/app/depenses'
+    | '/app/dettes'
+    | '/app/epargne'
+    | '/app/factures'
+    | '/app/investissements'
+    | '/app/objectifs'
+    | '/app/parametres'
+    | '/app/rapports'
+    | '/app/revenus'
+    | '/app/support'
+    | '/app'
+  id:
+    | '__root__'
+    | '/'
+    | '/app'
+    | '/app/abonnements'
+    | '/app/admin'
+    | '/app/assistant'
+    | '/app/budget'
+    | '/app/calendrier'
+    | '/app/depenses'
+    | '/app/dettes'
+    | '/app/epargne'
+    | '/app/factures'
+    | '/app/investissements'
+    | '/app/objectifs'
+    | '/app/parametres'
+    | '/app/rapports'
+    | '/app/revenus'
+    | '/app/support'
+    | '/app/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AppRoute: typeof AppRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/app': {
+      id: '/app'
+      path: '/app'
+      fullPath: '/app'
+      preLoaderRoute: typeof AppRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -48,12 +262,175 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/app/': {
+      id: '/app/'
+      path: '/'
+      fullPath: '/app/'
+      preLoaderRoute: typeof AppIndexRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/support': {
+      id: '/app/support'
+      path: '/support'
+      fullPath: '/app/support'
+      preLoaderRoute: typeof AppSupportRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/revenus': {
+      id: '/app/revenus'
+      path: '/revenus'
+      fullPath: '/app/revenus'
+      preLoaderRoute: typeof AppRevenusRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/rapports': {
+      id: '/app/rapports'
+      path: '/rapports'
+      fullPath: '/app/rapports'
+      preLoaderRoute: typeof AppRapportsRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/parametres': {
+      id: '/app/parametres'
+      path: '/parametres'
+      fullPath: '/app/parametres'
+      preLoaderRoute: typeof AppParametresRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/objectifs': {
+      id: '/app/objectifs'
+      path: '/objectifs'
+      fullPath: '/app/objectifs'
+      preLoaderRoute: typeof AppObjectifsRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/investissements': {
+      id: '/app/investissements'
+      path: '/investissements'
+      fullPath: '/app/investissements'
+      preLoaderRoute: typeof AppInvestissementsRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/factures': {
+      id: '/app/factures'
+      path: '/factures'
+      fullPath: '/app/factures'
+      preLoaderRoute: typeof AppFacturesRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/epargne': {
+      id: '/app/epargne'
+      path: '/epargne'
+      fullPath: '/app/epargne'
+      preLoaderRoute: typeof AppEpargneRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/dettes': {
+      id: '/app/dettes'
+      path: '/dettes'
+      fullPath: '/app/dettes'
+      preLoaderRoute: typeof AppDettesRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/depenses': {
+      id: '/app/depenses'
+      path: '/depenses'
+      fullPath: '/app/depenses'
+      preLoaderRoute: typeof AppDepensesRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/calendrier': {
+      id: '/app/calendrier'
+      path: '/calendrier'
+      fullPath: '/app/calendrier'
+      preLoaderRoute: typeof AppCalendrierRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/budget': {
+      id: '/app/budget'
+      path: '/budget'
+      fullPath: '/app/budget'
+      preLoaderRoute: typeof AppBudgetRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/assistant': {
+      id: '/app/assistant'
+      path: '/assistant'
+      fullPath: '/app/assistant'
+      preLoaderRoute: typeof AppAssistantRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/admin': {
+      id: '/app/admin'
+      path: '/admin'
+      fullPath: '/app/admin'
+      preLoaderRoute: typeof AppAdminRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/abonnements': {
+      id: '/app/abonnements'
+      path: '/abonnements'
+      fullPath: '/app/abonnements'
+      preLoaderRoute: typeof AppAbonnementsRouteImport
+      parentRoute: typeof AppRoute
+    }
   }
 }
 
+interface AppRouteChildren {
+  AppAbonnementsRoute: typeof AppAbonnementsRoute
+  AppAdminRoute: typeof AppAdminRoute
+  AppAssistantRoute: typeof AppAssistantRoute
+  AppBudgetRoute: typeof AppBudgetRoute
+  AppCalendrierRoute: typeof AppCalendrierRoute
+  AppDepensesRoute: typeof AppDepensesRoute
+  AppDettesRoute: typeof AppDettesRoute
+  AppEpargneRoute: typeof AppEpargneRoute
+  AppFacturesRoute: typeof AppFacturesRoute
+  AppInvestissementsRoute: typeof AppInvestissementsRoute
+  AppObjectifsRoute: typeof AppObjectifsRoute
+  AppParametresRoute: typeof AppParametresRoute
+  AppRapportsRoute: typeof AppRapportsRoute
+  AppRevenusRoute: typeof AppRevenusRoute
+  AppSupportRoute: typeof AppSupportRoute
+  AppIndexRoute: typeof AppIndexRoute
+}
+
+const AppRouteChildren: AppRouteChildren = {
+  AppAbonnementsRoute: AppAbonnementsRoute,
+  AppAdminRoute: AppAdminRoute,
+  AppAssistantRoute: AppAssistantRoute,
+  AppBudgetRoute: AppBudgetRoute,
+  AppCalendrierRoute: AppCalendrierRoute,
+  AppDepensesRoute: AppDepensesRoute,
+  AppDettesRoute: AppDettesRoute,
+  AppEpargneRoute: AppEpargneRoute,
+  AppFacturesRoute: AppFacturesRoute,
+  AppInvestissementsRoute: AppInvestissementsRoute,
+  AppObjectifsRoute: AppObjectifsRoute,
+  AppParametresRoute: AppParametresRoute,
+  AppRapportsRoute: AppRapportsRoute,
+  AppRevenusRoute: AppRevenusRoute,
+  AppSupportRoute: AppSupportRoute,
+  AppIndexRoute: AppIndexRoute,
+}
+
+const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AppRoute: AppRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}

@@ -60,10 +60,10 @@ function Nav() {
           ))}
         </nav>
         <div className="hidden items-center gap-3 md:flex">
-          <a href="#" className="text-sm font-semibold text-foreground/80 hover:text-foreground">Sign in</a>
-          <a href="#pricing" className="inline-flex items-center gap-1.5 rounded-full bg-orange-gradient px-5 py-2.5 text-sm font-semibold text-orange-foreground shadow-glow transition hover:brightness-110">
-            Get started <ArrowRight className="h-4 w-4" />
-          </a>
+          <Link to="/app" className="text-sm font-semibold text-foreground/80 hover:text-foreground">Se connecter</Link>
+          <Link to="/app" className="inline-flex items-center gap-1.5 rounded-full bg-orange-gradient px-5 py-2.5 text-sm font-semibold text-orange-foreground shadow-glow transition hover:brightness-110">
+            Commencer <ArrowRight className="h-4 w-4" />
+          </Link>
         </div>
         <button onClick={() => setOpen(!open)} className="md:hidden p-2" aria-label="Menu">
           <Menu className="h-5 w-5" />
