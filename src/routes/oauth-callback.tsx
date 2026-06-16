@@ -2,11 +2,11 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect } from "react";
 import { supabase } from "@/lib/supabase";
 
-export const Route = createFileRoute("/auth/callback")({
-  component: AuthCallback,
+export const Route = createFileRoute("/oauth-callback")({
+  component: OAuthCallback,
 });
 
-function AuthCallback() {
+function OAuthCallback() {
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -19,6 +19,23 @@ function AuthCallback() {
         if (!error) {
           navigate({ to: "/app" });
           return;
+        }
+      }
+
+      const hash = window.location.hash;
+      if (hash && hash.includes("access_token")) {
+        const params = new URLSearchParams(hash.substring(1));
+        const accessToken = params.get("access_token");
+        const refreshToken = params.get("refresh_token");
+        if (accessToken && refreshToken) {
+          const { data } = await supabase.auth.setSession({
+            access_token: accessToken,
+            refresh_token: refreshToken,
+          });
+          if (data.session) {
+            navigate({ to: "/app" });
+            return;
+          }
         }
       }
 
