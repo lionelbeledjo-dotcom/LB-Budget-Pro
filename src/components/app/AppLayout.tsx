@@ -1,10 +1,11 @@
-import { Link, Outlet, useLocation } from "@tanstack/react-router";
+import { Link, Outlet, useLocation, useNavigate } from "@tanstack/react-router";
 import {
   LayoutDashboard, Wallet, TrendingUp, Receipt, FileText, PiggyBank,
   CreditCard, BarChart3, CalendarDays, Sparkles, Settings, HelpCircle,
   ShieldCheck, RefreshCcw, Target, Menu, X, LogOut, Bell, User,
 } from "lucide-react";
 import { useState } from "react";
+import { useAuthStore } from "@/lib/store/auth-store";
 
 const NAV_ITEMS = [
   { to: "/app", icon: LayoutDashboard, label: "Tableau de bord" },
@@ -28,6 +29,16 @@ const NAV_ITEMS = [
 export function AppLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
+  const { user, signOut, isSuperAdmin } = useAuthStore();
+
+  const handleLogout = async () => {
+    await signOut();
+    navigate({ to: "/auth" });
+  };
+
+  const userName = user?.user_metadata?.full_name || user?.email?.split("@")[0] || "Utilisateur";
+  const initials = userName.split(" ").map((n: string) => n[0]).join("").slice(0, 2).toUpperCase();
 
   return (
     <div className="flex h-screen bg-background">
@@ -56,7 +67,7 @@ export function AppLayout() {
         {/* Nav */}
         <nav className="flex-1 overflow-y-auto px-3 py-4">
           <ul className="space-y-1">
-            {NAV_ITEMS.map(item => {
+            {NAV_ITEMS.filter(item => item.to !== "/app/admin" || isSuperAdmin).map(item => {
               const isActive = location.pathname === item.to || (item.to !== "/app" && location.pathname.startsWith(item.to));
               return (
                 <li key={item.to}>
@@ -82,13 +93,13 @@ export function AppLayout() {
         <div className="border-t border-border p-4">
           <div className="flex items-center gap-3">
             <div className="grid h-9 w-9 place-items-center rounded-full bg-navy text-xs font-bold text-white">
-              LB
+              {initials}
             </div>
             <div className="flex-1 min-w-0">
-              <p className="truncate text-sm font-semibold text-foreground">Lionel B.</p>
-              <p className="truncate text-xs text-muted-foreground">Plan Pro</p>
+              <p className="truncate text-sm font-semibold text-foreground">{userName}</p>
+              <p className="truncate text-xs text-muted-foreground">{isSuperAdmin ? "Super Admin" : "Plan Pro"}</p>
             </div>
-            <button className="text-muted-foreground hover:text-foreground">
+            <button onClick={handleLogout} className="text-muted-foreground hover:text-foreground" title="Déconnexion">
               <LogOut className="h-4 w-4" />
             </button>
           </div>
