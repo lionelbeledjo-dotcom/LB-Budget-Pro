@@ -1,7 +1,7 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import {
   Wallet, TrendingUp, TrendingDown, PiggyBank, CreditCard, BarChart3,
-  Target, AlertTriangle, ArrowUpRight, ArrowDownRight,
+  Target, AlertTriangle, ArrowUpRight, ArrowDownRight, RefreshCcw,
 } from "lucide-react";
 import { useFinanceStore } from "@/lib/store/finance-store";
 import {
@@ -58,25 +58,24 @@ function Dashboard() {
         <p className="text-sm text-muted-foreground">Vue d'ensemble de vos finances — Juin 2026</p>
       </div>
 
-      {/* KPI Cards */}
+      {/* KPI Cards - cliquables */}
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5">
-        <KPICard icon={Wallet} label="Solde global" value={solde} color="navy" trend={+5.2} />
-        <KPICard icon={TrendingUp} label="Revenus du mois" value={revenus} color="success" trend={+12.0} />
-        <KPICard icon={TrendingDown} label="Dépenses du mois" value={depenses} color="destructive" trend={-3.5} />
-        <KPICard icon={PiggyBank} label="Épargne totale" value={totalEpargne} color="success" />
-        <KPICard icon={BarChart3} label="Investissements" value={totalInvestissements} color="navy" trend={+8.1} />
+        <KPICard icon={Wallet} label="Solde global" value={solde} color="navy" trend={+5.2} to="/app/revenus" />
+        <KPICard icon={TrendingUp} label="Revenus du mois" value={revenus} color="success" trend={+12.0} to="/app/revenus" />
+        <KPICard icon={TrendingDown} label="Dépenses du mois" value={depenses} color="destructive" trend={-3.5} to="/app/depenses" />
+        <KPICard icon={PiggyBank} label="Épargne totale" value={totalEpargne} color="success" to="/app/epargne" />
+        <KPICard icon={BarChart3} label="Investissements" value={totalInvestissements} color="navy" trend={+8.1} to="/app/investissements" />
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <KPICard icon={CreditCard} label="Dette totale" value={totalDettes} color="destructive" />
-        <KPICard icon={Wallet} label="Budget restant" value={budgetRestant} color="orange" />
-        <KPICard icon={Target} label="Objectifs atteints" value={objectifsAtteints} color="success" isCurrency={false} suffix={`/ ${objectifs.length}`} />
-        <KPICard icon={AlertTriangle} label="Abonnements / mois" value={abonnementsMensuel} color="orange" />
+        <KPICard icon={CreditCard} label="Dette totale" value={totalDettes} color="destructive" to="/app/dettes" />
+        <KPICard icon={Wallet} label="Budget restant" value={budgetRestant} color="orange" to="/app/budget" />
+        <KPICard icon={Target} label="Objectifs atteints" value={objectifsAtteints} color="success" isCurrency={false} suffix={`/ ${objectifs.length}`} to="/app/objectifs" />
+        <KPICard icon={RefreshCcw} label="Abonnements / mois" value={abonnementsMensuel} color="orange" to="/app/abonnements" />
       </div>
 
       {/* Charts */}
       <div className="grid gap-6 lg:grid-cols-2">
-        {/* Cash Flow */}
         <div className="rounded-2xl border border-border bg-card p-5 shadow-card">
           <h3 className="font-display text-sm font-bold text-navy">Flux de trésorerie</h3>
           <p className="text-xs text-muted-foreground mb-4">Revenus vs Dépenses (6 derniers mois)</p>
@@ -94,8 +93,7 @@ function Dashboard() {
           </div>
         </div>
 
-        {/* Pie dépenses */}
-        <div className="rounded-2xl border border-border bg-card p-5 shadow-card">
+        <Link to="/app/depenses" className="rounded-2xl border border-border bg-card p-5 shadow-card hover:shadow-elegant transition cursor-pointer">
           <h3 className="font-display text-sm font-bold text-navy">Répartition des dépenses</h3>
           <p className="text-xs text-muted-foreground mb-4">Par catégorie ce mois-ci</p>
           {pieData.length > 0 ? (
@@ -125,10 +123,9 @@ function Dashboard() {
           ) : (
             <p className="py-12 text-center text-sm text-muted-foreground">Aucune dépense enregistrée</p>
           )}
-        </div>
+        </Link>
 
-        {/* Budget overview */}
-        <div className="rounded-2xl border border-border bg-card p-5 shadow-card">
+        <Link to="/app/budget" className="rounded-2xl border border-border bg-card p-5 shadow-card hover:shadow-elegant transition cursor-pointer">
           <h3 className="font-display text-sm font-bold text-navy">Budgets en cours</h3>
           <p className="text-xs text-muted-foreground mb-4">Progression mensuelle</p>
           {budgets.length > 0 ? (
@@ -145,10 +142,7 @@ function Dashboard() {
                       </span>
                     </div>
                     <div className="h-2 overflow-hidden rounded-full bg-secondary">
-                      <div
-                        className={`h-full rounded-full transition-all ${overBudget ? "bg-destructive" : pct > 70 ? "bg-orange" : "bg-success"}`}
-                        style={{ width: `${pct}%` }}
-                      />
+                      <div className={`h-full rounded-full transition-all ${overBudget ? "bg-destructive" : pct > 70 ? "bg-orange" : "bg-success"}`} style={{ width: `${pct}%` }} />
                     </div>
                   </div>
                 );
@@ -157,9 +151,8 @@ function Dashboard() {
           ) : (
             <p className="py-12 text-center text-sm text-muted-foreground">Aucun budget créé</p>
           )}
-        </div>
+        </Link>
 
-        {/* Barres revenus/dépenses */}
         <div className="rounded-2xl border border-border bg-card p-5 shadow-card">
           <h3 className="font-display text-sm font-bold text-navy">Revenus vs Dépenses</h3>
           <p className="text-xs text-muted-foreground mb-4">Comparaison mensuelle</p>
@@ -179,7 +172,7 @@ function Dashboard() {
       </div>
 
       {/* Alerts */}
-      <div className="rounded-2xl border border-orange/30 bg-orange/5 p-4">
+      <Link to="/app/factures" className="block rounded-2xl border border-orange/30 bg-orange/5 p-4 hover:bg-orange/10 transition">
         <div className="flex items-center gap-2 text-orange">
           <AlertTriangle className="h-4 w-4" />
           <h3 className="font-display text-sm font-bold">Alertes importantes</h3>
@@ -189,13 +182,13 @@ function Dashboard() {
           <li>• Facture EDF de 85 € à payer avant le 25 juin</li>
           <li>• Votre carte Visa a un solde de 800 € (taux 18.5%)</li>
         </ul>
-      </div>
+      </Link>
     </div>
   );
 }
 
 function KPICard({
-  icon: Icon, label, value, color, trend, isCurrency = true, suffix,
+  icon: Icon, label, value, color, trend, isCurrency = true, suffix, to,
 }: {
   icon: React.ElementType;
   label: string;
@@ -204,6 +197,7 @@ function KPICard({
   trend?: number;
   isCurrency?: boolean;
   suffix?: string;
+  to: string;
 }) {
   const colorMap = {
     navy: "text-navy bg-navy/5",
@@ -213,7 +207,7 @@ function KPICard({
   };
 
   return (
-    <div className="rounded-2xl border border-border bg-card p-4 shadow-card">
+    <Link to={to} className="rounded-2xl border border-border bg-card p-4 shadow-card hover:shadow-elegant hover:border-orange/30 transition cursor-pointer">
       <div className="flex items-center justify-between">
         <div className={`grid h-9 w-9 place-items-center rounded-xl ${colorMap[color]}`}>
           <Icon className="h-4.5 w-4.5" />
@@ -232,6 +226,6 @@ function KPICard({
           {suffix && <span className="text-sm text-muted-foreground ml-1">{suffix}</span>}
         </p>
       </div>
-    </div>
+    </Link>
   );
 }

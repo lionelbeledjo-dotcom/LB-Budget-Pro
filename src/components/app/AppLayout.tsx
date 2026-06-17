@@ -3,7 +3,7 @@ import {
   LayoutDashboard, Wallet, TrendingUp, Receipt, FileText, PiggyBank,
   CreditCard, BarChart3, CalendarDays, Sparkles, Settings, HelpCircle,
   ShieldCheck, RefreshCcw, Target, Menu, X, LogOut, Bell, User,
-  Users, Activity, Mail, Database, Globe, Megaphone, Layers,
+  Users, Activity, Mail, Database, Globe, Megaphone, Layers, Check,
 } from "lucide-react";
 import { useState } from "react";
 import { useAuthStore } from "@/lib/store/auth-store";
@@ -134,13 +134,10 @@ export function AppLayout() {
           </button>
           <div className="hidden lg:block" />
           <div className="flex items-center gap-3">
-            <button className="relative rounded-xl p-2 text-muted-foreground hover:bg-secondary hover:text-foreground transition">
-              <Bell className="h-5 w-5" />
-              <span className="absolute right-1.5 top-1.5 h-2 w-2 rounded-full bg-orange" />
-            </button>
-            <button className="rounded-xl p-2 text-muted-foreground hover:bg-secondary hover:text-foreground transition">
+            <NotificationBell />
+            <Link to="/app/parametres" className="rounded-xl p-2 text-muted-foreground hover:bg-secondary hover:text-foreground transition" title="Mon profil">
               <User className="h-5 w-5" />
-            </button>
+            </Link>
           </div>
         </header>
 
@@ -149,6 +146,64 @@ export function AppLayout() {
           <Outlet />
         </main>
       </div>
+    </div>
+  );
+}
+
+function NotificationBell() {
+  const [open, setOpen] = useState(false);
+  const [notifications, setNotifications] = useState([
+    { id: 1, text: "Budget Loisirs utilisé à 79%", time: "Il y a 2h", read: false },
+    { id: 2, text: "Facture EDF — échéance dans 3 jours", time: "Il y a 5h", read: false },
+    { id: 3, text: "Nouveau revenu détecté : +2 400 €", time: "Hier", read: true },
+    { id: 4, text: "Abonnement Netflix renouvelé", time: "Hier", read: true },
+  ]);
+
+  const unread = notifications.filter(n => !n.read).length;
+
+  const markAllRead = () => {
+    setNotifications(prev => prev.map(n => ({ ...n, read: true })));
+  };
+
+  const dismiss = (id: number) => {
+    setNotifications(prev => prev.filter(n => n.id !== id));
+  };
+
+  return (
+    <div className="relative">
+      <button onClick={() => setOpen(!open)} className="relative rounded-xl p-2 text-muted-foreground hover:bg-secondary hover:text-foreground transition">
+        <Bell className="h-5 w-5" />
+        {unread > 0 && <span className="absolute right-1.5 top-1.5 h-2 w-2 rounded-full bg-orange" />}
+      </button>
+      {open && (
+        <>
+          <div className="fixed inset-0 z-40" onClick={() => setOpen(false)} />
+          <div className="absolute right-0 top-full z-50 mt-2 w-80 rounded-2xl border border-border bg-card shadow-elegant">
+            <div className="flex items-center justify-between border-b border-border px-4 py-3">
+              <h4 className="font-display text-sm font-bold text-navy">Notifications</h4>
+              {unread > 0 && (
+                <button onClick={markAllRead} className="text-xs font-medium text-orange hover:underline">Tout marquer lu</button>
+              )}
+            </div>
+            <div className="max-h-64 overflow-y-auto">
+              {notifications.length === 0 ? (
+                <p className="px-4 py-6 text-center text-sm text-muted-foreground">Aucune notification</p>
+              ) : (
+                notifications.map(n => (
+                  <div key={n.id} className={`flex items-start gap-3 px-4 py-3 border-b border-border/50 last:border-0 ${n.read ? "" : "bg-orange/5"}`}>
+                    <div className={`mt-0.5 h-2 w-2 rounded-full ${n.read ? "bg-transparent" : "bg-orange"}`} />
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm">{n.text}</p>
+                      <p className="text-[11px] text-muted-foreground">{n.time}</p>
+                    </div>
+                    <button onClick={() => dismiss(n.id)} className="text-muted-foreground hover:text-foreground"><X className="h-3 w-3" /></button>
+                  </div>
+                ))
+              )}
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 }
