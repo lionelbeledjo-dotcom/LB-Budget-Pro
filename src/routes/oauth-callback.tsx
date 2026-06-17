@@ -10,6 +10,21 @@ function OAuthCallback() {
   const navigate = useNavigate();
 
   useEffect(() => {
+    const notifyNewUser = (user: { id?: string; email?: string; user_metadata?: any; created_at?: string }) => {
+      supabase.functions.invoke("notify-new-user", {
+        body: {
+          type: "INSERT",
+          table: "users",
+          record: {
+            id: user.id,
+            email: user.email,
+            raw_user_meta_data: { full_name: user.user_metadata?.full_name || user.user_metadata?.name },
+            created_at: user.created_at,
+          },
+        },
+      }).catch(() => {});
+    };
+
     const handleCallback = async () => {
       const url = new URL(window.location.href);
       const code = url.searchParams.get("code");
@@ -17,6 +32,10 @@ function OAuthCallback() {
       if (code) {
         const { error } = await supabase.auth.exchangeCodeForSession(code);
         if (!error) {
+          const { data: { user } } = await supabase.auth.getUser();
+          if (user && user.created_at && (Date.now() - new Date(user.created_at).getTime() < 60000)) {
+            notifyNewUser(user);
+          }
           navigate({ to: "/app" });
           return;
         }
@@ -33,6 +52,10 @@ function OAuthCallback() {
             refresh_token: refreshToken,
           });
           if (data.session) {
+            const user = data.session.user;
+            if (user.created_at && (Date.now() - new Date(user.created_at).getTime() < 60000)) {
+              notifyNewUser(user);
+            }
             navigate({ to: "/app" });
             return;
           }

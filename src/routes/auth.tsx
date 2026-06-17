@@ -51,7 +51,7 @@ function AuthPage() {
     if (!fullName.trim()) { setError("Veuillez entrer votre nom complet."); return; }
     if (password.length < 6) { setError("Le mot de passe doit contenir au moins 6 caractères."); return; }
     setLoading(true);
-    const { error } = await supabase.auth.signUp({
+    const { data, error } = await supabase.auth.signUp({
       email,
       password,
       options: { data: { full_name: fullName } },
@@ -60,6 +60,18 @@ function AuthPage() {
       setError(error.message);
     } else {
       setSuccess("Compte créé avec succès ! Vérifiez votre email pour confirmer votre inscription.");
+      supabase.functions.invoke("notify-new-user", {
+        body: {
+          type: "INSERT",
+          table: "users",
+          record: {
+            id: data.user?.id,
+            email: data.user?.email,
+            raw_user_meta_data: { full_name: fullName },
+            created_at: data.user?.created_at,
+          },
+        },
+      }).catch(() => {});
     }
     setLoading(false);
   };
